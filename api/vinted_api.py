@@ -1,3 +1,4 @@
+from typing import Dict, List, Optional
 import requests
 import logging
 
@@ -7,7 +8,7 @@ class VintedAPI:
     def __init__(self, country_code=".de"):
         self.session = requests.Session()
         self.token: Optional[str] = None
-        self.base_url = f"https://www.vinted{country_code}"  # URL dinamico in base al paese
+        self.base_url = f"https://www.vinted{country_code}"  # Dynamic URL based on country
     
     def _get_headers(self, with_auth: bool = False) -> Dict:
         headers = {
@@ -41,11 +42,11 @@ async def search_products(self, search_text: str) -> List[Dict]:
         response.raise_for_status()
         data = response.json()
         
-        # Estrazione dell'URL dell'immagine, se disponibile
+        # Extract the image URL, if available
         items = []
         for item in data.get('items', []):
             image_url = item.get('photos', [{}])[0].get('url', None)
-            item['image_url'] = image_url  # Aggiungi l'URL dell'immagine all'item
+            item['image_url'] = image_url  # Add the image URL to the item
             items.append(item)
         
         return items

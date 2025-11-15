@@ -16,7 +16,7 @@ class VintedMonitor:
         while True:
             try:
                 for country_code in self.config['countries']:
-                    # Iniziamo una nuova sessione API per ciascun paese
+                    # Start a new API session for each country
                     self.api = VintedAPI(country_code)
                     
                     for search_term in self.config['search_terms']:
@@ -31,14 +31,14 @@ class VintedMonitor:
                                 
                                 self.db.add_product(item)
                                 
-                                # Creazione del messaggio da inviare a Telegram
+                                # Create the message to send to Telegram
                                 message_text = self.create_message(item, country_code)
                                 
-                                # Invia il messaggio con immagine e link
+                                # Send the message with image and link
                                 self.bot.send_message(
                                     message_text,
-                                    image_url=item.get('image_url'),  # Passa l'URL dell'immagine
-                                    product_url=item['url']           # Passa il link al prodotto
+                                    image_url=item.get('image_url'),  # Pass the image URL
+                                    product_url=item['url']           # Pass the product link
                                 )
                                 logger.info(f"New product found and posted: {item.get('title')}")
                             except Exception as e:
@@ -54,13 +54,13 @@ class VintedMonitor:
     def create_message(self, item, country_code):
         country_name = self.get_country_name_from_code(country_code)
         
-        # Dettagli del prodotto
+        # Product details
         title = item['title']
         price = item['price']
         url = item['url']
-        image_url = item.get('image_url')  # Assumiamo che l'immagine sia nell'oggetto 'item'
+        image_url = item.get('image_url')  # Assume the image is in the 'item' object
         
-        # Creazione del messaggio
+        # Create the message
         message_text = f"New Product in {country_name}: {title}\nPrice: {price}€\nCountry: {country_name}\nLink: {url}"
         
         return message_text

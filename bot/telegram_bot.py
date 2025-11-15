@@ -11,18 +11,18 @@ class TelegramBot:
         
     def send_message(self, text, parse_mode=ParseMode.MARKDOWN, image_url=None, product_url=None):
         try:
-            # Se viene fornita un'immagine, invia l'immagine prima del messaggio
+            # If an image is provided, send the image before the message.
             if image_url:
                 self.bot.send_photo(chat_id=self.chat_id, photo=image_url)
             
-            # Creazione del pulsante "Acquista" con il link al prodotto
+            # Creation of the “Buy” button with the link to the product
             keyboard = []
             if product_url:
                 keyboard = [[InlineKeyboardButton("Go to Product", url=product_url)]]
             
             reply_markup = InlineKeyboardMarkup(keyboard)
             
-            # Invia il messaggio con il pulsante "Acquista"
+            # Send the message using the “Buy” button.
             self.bot.send_message(
                 chat_id=self.chat_id,
                 text=text,
